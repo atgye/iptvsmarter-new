@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CheckCircleIcon } from "@heroicons/react/24/outline"; // Wait, I'll just use SVG to avoid missing deps
 
 export default function SuccessPage() {
   return (
