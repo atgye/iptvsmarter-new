@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Plus_Jakarta_Sans, Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
@@ -48,6 +49,9 @@ export default function RootLayout({
       lang="fr"
       className={`${plusJakarta.variable} ${manrope.variable} ${inter.variable}`}
     >
+      <head>
+        <link rel="stylesheet" href="https://paytech.sn/cdn/paytech.min.css" />
+      </head>
       <body className="min-h-screen flex flex-col">
         <CartProvider>
           <Navbar />
@@ -55,6 +59,7 @@ export default function RootLayout({
           <Footer />
           <WhatsAppButton />
         </CartProvider>
+        <Script src="https://paytech.sn/cdn/paytech.min.js" strategy="beforeInteractive" />
       </body>
     </html>
   );

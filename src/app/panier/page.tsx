@@ -1,16 +1,55 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 
 export default function PanierPage() {
   const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const suggestions = products
     .filter((p) => !items.find((item) => item.product.id === p.id))
     .slice(0, 3);
+
+  const handleCheckout = async () => {
+    try {
+      setIsCheckingOut(true);
+      const ref_command = `CMD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+      const payload = {
+        item_name: `Commande IPTVSmarters - ${items.length} article(s)`,
+        item_price: totalPrice,
+        ref_command: ref_command,
+        custom_field: { items: items.map(i => ({ id: i.product.id, qty: i.quantity })) }
+      };
+
+      const res = await fetch("/api/paytech", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success === 1 && data.redirect_url) {
+        // Option popup Paytech
+        if (typeof window !== "undefined" && (window as any).PayTech) {
+          (new (window as any).PayTech(data.token)).withOption({ displayMode: (window as any).PayTech.OPEN_IN_POPUP }).send();
+        } else {
+          window.location.href = data.redirect_url;
+        }
+      } else {
+        alert("Erreur PayTech: " + JSON.stringify(data.error || data));
+      }
+    } catch (e) {
+      console.error("Erreur Checkout:", e);
+      alert("Erreur réseau ou système lors du paiement.");
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   return (
     <>
@@ -58,12 +97,12 @@ export default function PanierPage() {
                       {item.product.categorySlug === "streaming"
                         ? "🎬"
                         : item.product.categorySlug === "iptv"
-                        ? "📺"
-                        : item.product.categorySlug === "musique"
-                        ? "🎵"
-                        : item.product.categorySlug === "vpn"
-                        ? "🔒"
-                        : "🎁"}
+                          ? "📺"
+                          : item.product.categorySlug === "musique"
+                            ? "🎵"
+                            : item.product.categorySlug === "vpn"
+                              ? "🔒"
+                              : "🎁"}
                     </div>
 
                     <div className="flex-1 min-w-0">
@@ -180,10 +219,12 @@ export default function PanierPage() {
                   </div>
 
                   <button
-                    className="w-full rounded-2xl py-4 text-center font-bold gradient-cta transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-primary"
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut}
+                    className="w-full rounded-2xl py-4 text-center font-bold gradient-cta transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     id="checkout-button"
                   >
-                    Procéder au paiement
+                    {isCheckingOut ? "Initialisation..." : "Procéder au paiement"}
                   </button>
 
                   <div className="flex items-center gap-2 rounded-xl bg-surface-container-low p-3">

@@ -70,12 +70,12 @@ export default function ProductDetailPage() {
                 {product.categorySlug === "streaming"
                   ? "🎬"
                   : product.categorySlug === "iptv"
-                  ? "📺"
-                  : product.categorySlug === "musique"
-                  ? "🎵"
-                  : product.categorySlug === "vpn"
-                  ? "🔒"
-                  : "🎁"}
+                    ? "📺"
+                    : product.categorySlug === "musique"
+                      ? "🎵"
+                      : product.categorySlug === "vpn"
+                        ? "🔒"
+                        : "🎁"}
                 {/* Glow behind */}
                 <div className="absolute inset-0 rounded-3xl bg-primary-container/10 blur-2xl" />
               </div>
