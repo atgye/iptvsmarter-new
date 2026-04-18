@@ -26,7 +26,7 @@ export default function PanierPage() {
         custom_field: { items: items.map(i => ({ id: i.product.id, qty: i.quantity })) }
       };
 
-      const res = await fetch("/api/paytech", {
+      const res = await fetch("/api/paydunya", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -34,14 +34,10 @@ export default function PanierPage() {
       const data = await res.json();
 
       if (data.success === 1 && data.redirect_url) {
-        // Option popup Paytech
-        if (typeof window !== "undefined" && (window as any).PayTech) {
-          (new (window as any).PayTech(data.token)).withOption({ displayMode: (window as any).PayTech.OPEN_IN_POPUP }).send();
-        } else {
-          window.location.href = data.redirect_url;
-        }
+        // Redirection vers PayDunya
+        window.location.href = data.redirect_url;
       } else {
-        alert("Erreur PayTech: " + JSON.stringify(data.error || data));
+        alert("Erreur PayDunya: " + JSON.stringify(data.error || data));
       }
     } catch (e) {
       console.error("Erreur Checkout:", e);

@@ -50,7 +50,6 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${manrope.variable} ${inter.variable}`}
     >
       <head>
-        <link rel="stylesheet" href="https://paytech.sn/cdn/paytech.min.css" />
       </head>
       <body className="min-h-screen flex flex-col">
         <CartProvider>
@@ -59,7 +58,6 @@ export default function RootLayout({
           <Footer />
           <WhatsAppButton />
         </CartProvider>
-        <Script src="https://paytech.sn/cdn/paytech.min.js" strategy="beforeInteractive" />
       </body>
     </html>
   );
