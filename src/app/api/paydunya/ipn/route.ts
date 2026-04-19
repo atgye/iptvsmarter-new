@@ -1,108 +1,108 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import fs from "fs";
-import path from "path";
 
-// Helper function to save order to a local JSON file
-function saveOrder(ref_command: string, custom_field: any) {
-  try {
-    const filePath = path.resolve(process.cwd(), "orders.json");
-    let orders = [];
-    if (fs.existsSync(filePath)) {
-      const fileData = fs.readFileSync(filePath, "utf-8");
-      orders = JSON.parse(fileData);
-    }
+const PAYDUNYA_BASE_URL = process.env.IS_PRODUCTION_MODE === "true"
+  ? "https://app.paydunya.com/api/v1"
+  : "https://app.paydunya.com/sandbox-api/v1";
 
-    const orderIndex = orders.findIndex((o: any) => o.ref_command === ref_command);
-    if (orderIndex >= 0) {
-      orders[orderIndex].status = "PAID";
-      orders[orderIndex].updatedAt = new Date().toISOString();
-    } else {
-      orders.push({
-        ref_command,
-        custom_field,
-        status: "PAID",
-        createdAt: new Date().toISOString(),
-      });
-    }
-
-    fs.writeFileSync(filePath, JSON.stringify(orders, null, 2), "utf-8");
-  } catch (error) {
-    console.error("Could not save order:", error);
-  }
+function getPaydunyaHeaders() {
+  return {
+    Accept: "application/json",
+    "PAYDUNYA-MASTER-KEY":  process.env.PAYDUNYA_MASTER_KEY  || "",
+    "PAYDUNYA-PRIVATE-KEY": process.env.PAYDUNYA_PRIVATE_KEY || "",
+    "PAYDUNYA-PUBLIC-KEY":  process.env.PAYDUNYA_PUBLIC_KEY  || "",
+    "PAYDUNYA-TOKEN":       process.env.PAYDUNYA_TOKEN       || "",
+  };
 }
 
+/**
+ * POST /api/paydunya/ipn
+ *
+ * PayDunya envoie une notification IPN après chaque paiement.
+ * On re-vérifie systématiquement le statut via l'API (ne jamais
+ * faire confiance au payload IPN seul — toujours confirmer côté serveur).
+ */
 export async function POST(request: Request) {
   try {
-    // PayDunya callback sends data payload via POST. 
-    // We can extract data.data.hash and token from the JSON body or url-encoded form.
-    // Try both:
-    let bodyData: any;
+    let bodyData: Record<string, unknown> = {};
     const contentType = request.headers.get("content-type") || "";
 
     if (contentType.includes("application/json")) {
       bodyData = await request.json();
     } else {
       const formData = await request.formData();
-      // Sometimes it's a "data" stringified property
       const dataField = formData.get("data");
       if (dataField) {
         bodyData = JSON.parse(dataField as string);
       } else {
-        // Build an object out of formData keys
-        bodyData = Object.fromEntries(formData.entries());
+        bodyData = Object.fromEntries(formData.entries()) as Record<string, unknown>;
       }
     }
 
-    // Usually the payload is wrapped in a "data" object.
-    const payload = bodyData.data || bodyData;
-    const hash = payload.hash;
-    const response_code = payload.response_code;
-    const invoiceToken = payload.invoice?.token;
+    // Le payload peut être imbriqué dans un champ "data"
+    const payload = (bodyData.data as Record<string, unknown>) || bodyData;
+    const invoiceToken = (payload.invoice as Record<string, unknown>)?.token as string | undefined;
 
-    // Secure Verification Check using the "MasterKey" as per PayDunya docs
-    // The hash might be generated securely, but the recommended highly-secure method
-    // is to fetch the transaction details again from PayDunya API using the invoice token:
     if (!invoiceToken) {
-      console.warn("No invoice token found in IPN payload.");
-      return new NextResponse("IPN Invalid structure", { status: 400 });
+      console.warn("[IPN] Payload reçu sans token de facture :", JSON.stringify(bodyData));
+      return new NextResponse("IPN structure invalide", { status: 400 });
     }
 
-    const verifyResponse = await fetch(`https://app.paydunya.com/api/v1/checkout-invoice/confirm/${invoiceToken}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "PAYDUNYA-MASTER-KEY": process.env.PAYDUNYA_MASTER_KEY || "",
-        "PAYDUNYA-PRIVATE-KEY": process.env.PAYDUNYA_PRIVATE_KEY || "",
-        "PAYDUNYA-TOKEN": process.env.PAYDUNYA_TOKEN || "",
-      },
-    });
+    // ✅ Vérification côté serveur — la seule méthode fiable
+    const verifyResponse = await fetch(
+      `${PAYDUNYA_BASE_URL}/checkout-invoice/confirm/${invoiceToken}`,
+      { method: "GET", headers: getPaydunyaHeaders() }
+    );
 
     const verifyData = await verifyResponse.json();
 
-    if (verifyData.response_code === "00" && verifyData.status === "completed") {
-      // Payment Verified!
-      const custom_data = verifyData.custom_data || {};
-      const ref_command = custom_data.ref_command;
-      let parsedCustomField = {};
-
-      try {
-        if (custom_data.custom_field) {
-          parsedCustomField = JSON.parse(custom_data.custom_field);
-        }
-      } catch (e) {}
-
-      if (ref_command) {
-        saveOrder(ref_command, parsedCustomField);
-      }
-
-      return new NextResponse("IPN OK", { status: 200 });
-    } else {
-      console.warn("IPN Verification Failed or payment not completed.", verifyData);
-      return new NextResponse("IPN Verification Failed", { status: 400 });
+    if (verifyData.response_code !== "00") {
+      console.warn("[IPN] Échec de vérification PayDunya :", verifyData);
+      return new NextResponse("Vérification échouée", { status: 400 });
     }
+
+    const status = verifyData.status as string; // "completed" | "pending" | "canceled" | "fail"
+
+    if (status !== "completed") {
+      console.log(`[IPN] Paiement non complété — statut : ${status} — token : ${invoiceToken}`);
+      // On retourne 200 pour que PayDunya ne retry pas — mais on ne traite pas
+      return new NextResponse("OK (non complété)", { status: 200 });
+    }
+
+    // ── Paiement confirmé : traiter la commande ──────────────────────────────
+    const customData   = verifyData.custom_data || {};
+    const refCommand   = customData.ref_command as string | undefined;
+    const totalAmount  = verifyData.invoice?.total_amount as number | undefined;
+    const customer     = verifyData.customer as { name?: string; phone?: string; email?: string } | undefined;
+
+    let customField: Record<string, unknown> = {};
+    try {
+      if (customData.custom_field) {
+        customField = JSON.parse(customData.custom_field as string);
+      }
+    } catch {
+      // custom_field peut déjà être un objet
+      customField = (customData.custom_field as Record<string, unknown>) || {};
+    }
+
+    console.log("[IPN] ✅ Paiement confirmé :", {
+      token:      invoiceToken,
+      ref:        refCommand,
+      amount:     totalAmount,
+      customer,
+      items:      customField,
+    });
+
+    // TODO: Persister la commande en base de données ici.
+    // Exemple avec Prisma :
+    //   await prisma.order.upsert({
+    //     where:  { refCommand },
+    //     update: { status: "PAID", updatedAt: new Date() },
+    //     create: { refCommand, items: customField, amount: totalAmount, status: "PAID" },
+    //   });
+
+    return new NextResponse("IPN OK", { status: 200 });
   } catch (error) {
-    console.error("IPN Error:", error);
-    return new NextResponse("IPN Error", { status: 500 });
+    console.error("[IPN] Erreur :", error);
+    return new NextResponse("Erreur serveur IPN", { status: 500 });
   }
 }

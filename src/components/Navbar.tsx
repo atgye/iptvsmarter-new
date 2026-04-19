@@ -18,16 +18,16 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 glass">
+      <header className="fixed top-0 left-0 right-0 z-50 glass-nav">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 font-[var(--font-headline)] text-xl font-bold tracking-tight"
           >
-            <span className="inline-block h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary-container" />
-            <span className="text-on-surface">
-              IPTV<span className="text-primary-container">Smarters</span>
+            <span className="inline-block h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600" />
+            <span className="text-gray-900 drop-shadow-sm">
+              IPTV<span className="text-blue-600">Smarters</span>
             </span>
           </Link>
 
@@ -37,7 +37,7 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-on-surface-variant transition-colors hover:text-primary hover:bg-surface-container-high/50"
+                  className="rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:text-blue-600 hover:bg-white/40"
                 >
                   {link.label}
                 </Link>
@@ -50,7 +50,7 @@ export function Navbar() {
             {/* Cart */}
             <button
               onClick={() => setIsOpen(true)}
-              className="relative rounded-xl p-2.5 text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary"
+              className="relative rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-white/50 hover:text-blue-600"
               aria-label="Panier"
               id="cart-button"
             >
@@ -68,7 +68,7 @@ export function Navbar() {
                 />
               </svg>
               {totalItems > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-container text-[10px] font-bold text-on-primary">
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 shadow-md text-[10px] font-bold text-white">
                   {totalItems}
                 </span>
               )}
@@ -77,7 +77,7 @@ export function Navbar() {
             {/* Auth */}
             <Link
               href="/connexion"
-              className="hidden sm:inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold gradient-cta transition-all duration-300 hover:scale-105"
+              className="hidden sm:inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold gradient-cta shadow-sm transition-all duration-300 hover:scale-105"
               id="login-button"
             >
               Connexion
@@ -86,7 +86,7 @@ export function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden rounded-xl p-2.5 text-on-surface-variant hover:bg-surface-container-high"
+              className="md:hidden rounded-xl p-2.5 text-gray-700 hover:bg-white/50"
               aria-label="Menu"
               id="mobile-menu-button"
             >
@@ -117,14 +117,14 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-outline-variant/15 bg-surface-container/95 backdrop-blur-xl animate-slide-up">
+          <div className="md:hidden border-t border-white/40 bg-white/60 backdrop-blur-xl animate-slide-up">
             <ul className="flex flex-col gap-1 px-4 py-4">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary"
+                    className="block rounded-lg px-4 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-white/50 hover:text-blue-600"
                   >
                     {link.label}
                   </Link>
@@ -134,7 +134,7 @@ export function Navbar() {
                 <Link
                   href="/connexion"
                   onClick={() => setMobileOpen(false)}
-                  className="mt-2 block rounded-xl px-4 py-3 text-center text-sm font-semibold gradient-cta"
+                  className="mt-2 block rounded-xl px-4 py-3 text-center text-sm font-semibold gradient-cta shadow-sm"
                 >
                   Connexion
                 </Link>

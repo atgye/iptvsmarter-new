@@ -51,10 +51,15 @@ export default function RootLayout({
     >
       <head>
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col relative overflow-x-hidden">
+        {/* Decorative Blurred Shapes */}
+        <div className="pointer-events-none fixed -top-[20%] -left-[10%] h-[500px] w-[500px] rounded-full bg-blue-400/20 blur-[120px]" />
+        <div className="pointer-events-none fixed top-[20%] -right-[10%] h-[600px] w-[600px] rounded-full bg-indigo-400/20 blur-[120px]" />
+        <div className="pointer-events-none fixed -bottom-[10%] left-[20%] h-[500px] w-[500px] rounded-full bg-purple-400/20 blur-[120px]" />
+        
         <CartProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 relative z-10">{children}</main>
           <Footer />
           <WhatsAppButton />
         </CartProvider>

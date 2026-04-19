@@ -41,21 +41,21 @@ function FAQItem({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-2xl bg-surface-container transition-colors hover:bg-surface-container-high">
+    <div className="rounded-2xl glass border border-white/50 transition-colors shadow-sm hover:bg-white/60">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between px-6 py-5 text-left"
       >
-        <span className="text-sm font-semibold text-on-surface pr-4">
+        <span className="text-base font-bold text-gray-900 pr-4">
           {question}
         </span>
         <svg
-          className={`h-5 w-5 shrink-0 text-on-surface-variant transition-transform duration-300 ${
+          className={`h-5 w-5 shrink-0 text-gray-500 transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={1.5}
+          strokeWidth={2}
           stroke="currentColor"
         >
           <path
@@ -66,8 +66,8 @@ function FAQItem({
         </svg>
       </button>
       {open && (
-        <div className="px-6 pb-5">
-          <p className="text-sm leading-relaxed text-on-surface-variant">
+        <div className="px-6 pb-5 pt-2">
+          <p className="text-sm font-medium leading-relaxed text-gray-700">
             {answer}
           </p>
         </div>
@@ -94,41 +94,42 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-surface-container-lowest py-16 sm:py-20">
-        <div className="absolute -top-40 right-0 h-[400px] w-[400px] rounded-full bg-secondary/8 blur-[120px]" />
+      <section className="relative overflow-hidden py-16 sm:py-24 z-10">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-[var(--font-headline)] text-3xl font-extrabold text-on-surface sm:text-4xl lg:text-5xl">
-            Besoin d&apos;aide ?{" "}
-            <span className="bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent">
-              Nous sommes là.
-            </span>
-          </h1>
-          <p className="mt-4 mx-auto max-w-2xl text-base text-on-surface-variant">
-            Notre équipe de conciergerie premium est disponible pour répondre à
-            toutes vos questions sur vos abonnements et services.
-          </p>
+          <div className="glass max-w-3xl mx-auto p-10 sm:p-14 rounded-[3rem] shadow-xl border-white/60">
+            <h1 className="font-[var(--font-headline)] text-4xl font-extrabold text-gray-900 sm:text-5xl lg:text-6xl drop-shadow-sm">
+              Besoin d&apos;aide ?{" "}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Nous sommes là.
+              </span>
+            </h1>
+            <p className="mt-6 mx-auto max-w-2xl text-base font-medium text-gray-700 sm:text-lg">
+              Notre équipe de conciergerie premium est disponible pour répondre à
+              toutes vos questions sur vos abonnements et services.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Contact + Assistance */}
-      <section className="bg-surface py-16 sm:py-20">
+      <section className="py-16 sm:py-20 relative z-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
             {/* Contact Form */}
-            <div>
-              <h2 className="font-[var(--font-headline)] text-xl font-bold text-on-surface mb-2">
+            <div className="glass p-8 sm:p-10 rounded-[2.5rem] shadow-xl border-white/60">
+              <h2 className="font-[var(--font-headline)] text-2xl font-bold text-gray-900 mb-2 drop-shadow-sm">
                 Envoyez un message
               </h2>
-              <p className="text-sm text-on-surface-variant mb-8">
+              <p className="text-sm font-semibold text-gray-600 mb-8">
                 Réponse garantie sous 2 heures ouvrées.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div>
                     <label
                       htmlFor="contact-name"
-                      className="block text-xs font-medium text-on-surface-variant mb-2"
+                      className="block text-xs font-bold uppercase tracking-widest text-gray-700 mb-2"
                     >
                       Nom complet
                     </label>
@@ -140,14 +141,14 @@ export default function ContactPage() {
                       onChange={(e) =>
                         setFormState({ ...formState, name: e.target.value })
                       }
-                      className="w-full rounded-xl bg-surface-container-low py-3 px-4 text-sm text-on-surface placeholder:text-on-surface-variant/40 outline-none transition-all focus:bg-surface-container focus:ring-2 focus:ring-primary/30"
+                      className="w-full rounded-2xl bg-white/60 py-4 px-5 text-sm font-medium text-gray-900 placeholder:text-gray-400 border border-white/50 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/50 shadow-sm"
                       placeholder="Votre nom"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="contact-email"
-                      className="block text-xs font-medium text-on-surface-variant mb-2"
+                      className="block text-xs font-bold uppercase tracking-widest text-gray-700 mb-2"
                     >
                       Email
                     </label>
@@ -159,7 +160,7 @@ export default function ContactPage() {
                       onChange={(e) =>
                         setFormState({ ...formState, email: e.target.value })
                       }
-                      className="w-full rounded-xl bg-surface-container-low py-3 px-4 text-sm text-on-surface placeholder:text-on-surface-variant/40 outline-none transition-all focus:bg-surface-container focus:ring-2 focus:ring-primary/30"
+                      className="w-full rounded-2xl bg-white/60 py-4 px-5 text-sm font-medium text-gray-900 placeholder:text-gray-400 border border-white/50 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/50 shadow-sm"
                       placeholder="votre@email.com"
                     />
                   </div>
@@ -168,7 +169,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="contact-subject"
-                    className="block text-xs font-medium text-on-surface-variant mb-2"
+                    className="block text-xs font-bold uppercase tracking-widest text-gray-700 mb-2"
                   >
                     Sujet
                   </label>
@@ -180,7 +181,7 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormState({ ...formState, subject: e.target.value })
                     }
-                    className="w-full rounded-xl bg-surface-container-low py-3 px-4 text-sm text-on-surface placeholder:text-on-surface-variant/40 outline-none transition-all focus:bg-surface-container focus:ring-2 focus:ring-primary/30"
+                    className="w-full rounded-2xl bg-white/60 py-4 px-5 text-sm font-medium text-gray-900 placeholder:text-gray-400 border border-white/50 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/50 shadow-sm"
                     placeholder="Sujet de votre message"
                   />
                 </div>
@@ -188,7 +189,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="contact-message"
-                    className="block text-xs font-medium text-on-surface-variant mb-2"
+                    className="block text-xs font-bold uppercase tracking-widest text-gray-700 mb-2"
                   >
                     Message
                   </label>
@@ -200,14 +201,14 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormState({ ...formState, message: e.target.value })
                     }
-                    className="w-full rounded-xl bg-surface-container-low py-3 px-4 text-sm text-on-surface placeholder:text-on-surface-variant/40 outline-none transition-all focus:bg-surface-container focus:ring-2 focus:ring-primary/30 resize-none"
+                    className="w-full rounded-2xl bg-white/60 py-4 px-5 text-sm font-medium text-gray-900 placeholder:text-gray-400 border border-white/50 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/50 resize-none shadow-sm"
                     placeholder="Décrivez votre demande…"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full rounded-2xl py-4 text-center font-bold gradient-cta transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-primary"
+                  className="w-full rounded-2xl py-4 text-center text-lg font-bold gradient-cta shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   id="contact-submit"
                 >
                   Envoyer le message
@@ -216,21 +217,21 @@ export default function ContactPage() {
             </div>
 
             {/* Assistance */}
-            <div className="space-y-6">
-              <div className="rounded-2xl bg-surface-container p-8">
-                <h3 className="font-[var(--font-headline)] text-lg font-bold text-on-surface mb-3">
+            <div className="space-y-8">
+              <div className="rounded-[2.5rem] glass border-white/60 p-8 sm:p-10 shadow-xl">
+                <h3 className="font-[var(--font-headline)] text-xl font-bold text-gray-900 mb-4 drop-shadow-sm">
                   Assistance Directe
                 </h3>
-                <p className="text-sm text-on-surface-variant leading-relaxed mb-6">
+                <p className="text-sm font-medium text-gray-700 leading-relaxed mb-8">
                   Discutez instantanément avec l&apos;un de nos conseillers sur
                   WhatsApp pour une activation rapide.
                 </p>
                 <a
                   href="https://wa.me/221000000000"
-                  className="inline-flex items-center gap-3 rounded-xl bg-[#25D366]/10 px-6 py-3.5 text-sm font-semibold text-[#25D366] transition-all hover:bg-[#25D366]/20 hover:scale-105"
+                  className="inline-flex items-center gap-3 rounded-2xl bg-emerald-100 px-8 py-4 text-sm font-bold text-emerald-600 transition-all hover:bg-emerald-200 hover:scale-105 shadow-sm"
                 >
                   <svg
-                    className="h-5 w-5"
+                    className="h-6 w-6"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -240,23 +241,23 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              <div className="rounded-2xl bg-surface-container p-8">
-                <h3 className="font-[var(--font-headline)] text-lg font-bold text-on-surface mb-4">
+              <div className="rounded-[2.5rem] glass border-white/60 p-8 sm:p-10 shadow-xl">
+                <h3 className="font-[var(--font-headline)] text-xl font-bold text-gray-900 mb-6 drop-shadow-sm">
                   Rejoignez la communauté
                 </h3>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-4">
                   {[
-                    { name: "Instagram", icon: "📸", color: "bg-pink-500/10 text-pink-400" },
-                    { name: "Facebook", icon: "👥", color: "bg-blue-500/10 text-blue-400" },
-                    { name: "TikTok", icon: "🎬", color: "bg-purple-500/10 text-purple-400" },
+                    { name: "Instagram", icon: "📸", color: "bg-pink-100 text-pink-600" },
+                    { name: "Facebook", icon: "👥", color: "bg-blue-100 text-blue-600" },
+                    { name: "TikTok", icon: "🎬", color: "bg-purple-100 text-purple-600" },
                   ].map((social) => (
                     <a
                       key={social.name}
                       href="#"
-                      className={`flex flex-col items-center gap-2 rounded-xl ${social.color} p-4 transition-all hover:scale-105`}
+                      className={`flex flex-col items-center justify-center gap-3 rounded-2xl ${social.color} p-5 transition-all hover:scale-105 shadow-sm border border-white/50`}
                     >
-                      <span className="text-2xl">{social.icon}</span>
-                      <span className="text-xs font-medium">{social.name}</span>
+                      <span className="text-3xl">{social.icon}</span>
+                      <span className="text-xs font-bold uppercase tracking-wider">{social.name}</span>
                     </a>
                   ))}
                 </div>
@@ -267,27 +268,27 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-surface-container-low py-16 sm:py-20">
+      <section className="py-20 sm:py-28 relative z-10 border-t border-white/30 bg-white/10 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center font-[var(--font-headline)] text-2xl font-bold text-on-surface mb-3">
+          <h2 className="text-center font-[var(--font-headline)] text-3xl font-bold text-gray-900 mb-4 drop-shadow-sm">
             Foire aux questions
           </h2>
-          <p className="text-center text-sm text-on-surface-variant mb-10">
+          <p className="text-center text-base font-medium text-gray-700 mb-12">
             Tout ce que vous devez savoir sur nos services et abonnements.
           </p>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {faqItems.map((item) => (
               <FAQItem key={item.question} {...item} />
             ))}
           </div>
 
-          <div className="mt-10 text-center">
+          <div className="mt-12 text-center">
             <a
               href="https://wa.me/221000000000"
-              className="inline-flex items-center gap-2 rounded-xl bg-surface-container px-6 py-3.5 text-sm font-medium text-on-surface-variant transition-all hover:bg-surface-container-high hover:text-primary"
+              className="inline-flex glass border-white/60 items-center justify-center gap-3 rounded-2xl px-8 py-4 text-sm font-bold text-gray-800 transition-all hover:bg-white/60 hover:text-blue-600 shadow-md"
             >
-              💬 Une question ? Chattez avec nous !
+              <span className="text-lg">💬</span> Une question ? Chattez avec nous !
             </a>
           </div>
         </div>
