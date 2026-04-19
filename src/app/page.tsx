@@ -36,8 +36,8 @@ export default function HomePage() {
   return (
     <>
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative overflow-hidden min-h-[90vh] flex items-center justify-center py-20">
-        {/* Single beautiful background image */}
+      <section className="relative overflow-hidden min-h-[90vh] flex flex-col items-center pt-32 pb-20">
+        {/* Background image & Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=1600&q=80" 
@@ -45,46 +45,82 @@ export default function HomePage() {
             className="object-cover h-full w-full opacity-60" 
           />
         </div>
-        
-        {/* Glassmorphism Overlay */}
-        <div className="absolute inset-0 z-10 bg-white/40 backdrop-blur-[8px]" />
+        <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-[6px]" />
 
-        <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center glass p-10 sm:p-14 border border-white/60 shadow-2xl">
-            {/* Chip */}
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/60 border border-white/50 px-4 py-1.5 text-xs font-semibold text-primary mb-8 shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-primary animate-glow-pulse" />
-              Nouveau : SunuStream 2025
-            </span>
-
-            <h1 className="font-[var(--font-headline)] text-4xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-5xl lg:text-6xl drop-shadow-sm">
-              Vivez vos loisirs{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                à fond.
-              </span>
-            </h1>
-
-            <p className="mt-6 text-base leading-relaxed text-gray-700 font-medium sm:text-lg lg:text-xl max-w-2xl mx-auto">
-              Accès immédiat aux meilleures plateformes mondiales. Netflix,
-              Spotify, IPTV et bien plus à des tarifs locaux.
-            </p>
-
-            {/* CTA */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/catalogue"
-                className="w-full sm:w-auto rounded-2xl px-8 py-4 text-center font-bold glass transition-all hover:bg-white/50 hover:scale-105 border-white/60 text-gray-900 shadow-lg"
+        <div className="relative z-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8 mt-4 flex flex-col items-center">
+          
+          {/* Barre de recherche */}
+          <div className="w-full max-w-xl mb-12">
+            <div className="flex items-center bg-white rounded-full shadow-md p-2 hover:shadow-lg transition-shadow border border-gray-100">
+              <input 
+                type="text"
+                placeholder="Rechercher un produit..."
+                className="flex-1 bg-transparent border-none outline-none px-5 text-sm sm:text-base text-gray-700 placeholder:text-gray-400 focus:ring-0"
+              />
+              <button 
+                type="button"
+                className="flex shrink-0 items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full h-12 w-12 sm:h-14 sm:w-14 transition-colors"
+                aria-label="Rechercher"
               >
-                Voir le catalogue
-              </Link>
-              <Link
-                href="/catalogue"
-                className="w-full sm:w-auto rounded-2xl px-8 py-4 text-center font-bold gradient-cta transition-all hover:scale-105 shadow-glow-primary"
-              >
-                S'abonner
-              </Link>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </button>
             </div>
           </div>
+
+          {/* Textes Hero */}
+          <div className="text-center mb-16">
+            <span className="inline-block mb-4 text-orange-600 font-semibold text-sm bg-orange-100/80 px-4 py-1.5 rounded-full border border-orange-200">
+              Livraison instantanée ⚡
+            </span>
+            <h1 className="font-[var(--font-headline)] text-4xl font-bold text-blue-600 md:text-5xl drop-shadow-sm mb-6">
+              Paiement sécurisé 🔒
+            </h1>
+            <p className="text-gray-600 max-w-lg mx-auto text-center font-medium leading-relaxed">
+              Abonnements IPTV livrés instantanément après paiement. 
+              Profitez de vos contenus préférés sans attendre.
+            </p>
+          </div>
+
+          {/* Carrousel de cartes en éventail */}
+          <div className="relative flex justify-center items-center mb-20 h-56 sm:h-64 w-full max-w-3xl mx-auto">
+            {allFeatured.slice(0, 5).map((product, index) => {
+              const transforms = [
+                "-rotate-12 -translate-x-24 sm:-translate-x-40 -translate-y-2 z-10 opacity-90",
+                "-rotate-6 -translate-x-12 sm:-translate-x-20 translate-y-1 z-20 opacity-95",
+                "rotate-0 translate-y-0 z-30 scale-110 shadow-2xl",
+                "rotate-6 translate-x-12 sm:translate-x-20 translate-y-1 z-20 opacity-95",
+                "rotate-12 translate-x-24 sm:translate-x-40 -translate-y-2 z-10 opacity-90"
+              ];
+              const transform = transforms[index] || "";
+              
+              return (
+                <div 
+                  key={product.id}
+                  className={`absolute w-36 sm:w-40 rounded-2xl shadow-xl bg-white p-3 border border-gray-100 transition-transform duration-500 hover:-translate-y-6 hover:z-40 ${transform}`}
+                >
+                  <div className="h-20 sm:h-24 w-full rounded-xl bg-gray-100 overflow-hidden mb-3 relative">
+                    <img src={product.image} alt={product.name} className="object-cover h-full w-full" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-gray-900 line-clamp-1 text-center mb-1">
+                    {product.name}
+                  </h3>
+                  <div className="text-center font-black text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+                    {product.price.toLocaleString("fr-FR")} FCFA
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bouton CTA */}
+          <Link
+            href="/catalogue"
+            className="rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-8 py-3 text-white font-bold text-base sm:text-lg shadow-lg hover:scale-105 hover:shadow-orange-500/30 transition-all duration-300"
+          >
+            Découvrir les offres
+          </Link>
         </div>
       </section>
 
