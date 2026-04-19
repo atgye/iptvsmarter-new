@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/data/products";
@@ -31,7 +32,16 @@ const stats = [
 ];
 
 export default function HomePage() {
+  const [activeIndex, setActiveIndex] = useState(0);
   const allFeatured = products.slice(0, 8);
+  const heroCarouselItems = products.slice(0, 5);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % heroCarouselItems.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [heroCarouselItems.length]);
 
   return (
     <>
@@ -83,22 +93,29 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Carrousel de cartes en éventail */}
+          {/* Carrousel de cartes en éventail (Animé) */}
           <div className="relative flex justify-center items-center mb-20 h-56 sm:h-64 w-full max-w-3xl mx-auto">
-            {allFeatured.slice(0, 5).map((product, index) => {
+            {heroCarouselItems.map((product, index) => {
+              const positionIndex = (index - activeIndex + heroCarouselItems.length) % heroCarouselItems.length;
+              
               const transforms = [
-                "-rotate-12 -translate-x-24 sm:-translate-x-40 -translate-y-2 z-10 opacity-90",
-                "-rotate-6 -translate-x-12 sm:-translate-x-20 translate-y-1 z-20 opacity-95",
-                "rotate-0 translate-y-0 z-30 scale-110 shadow-2xl",
-                "rotate-6 translate-x-12 sm:translate-x-20 translate-y-1 z-20 opacity-95",
-                "rotate-12 translate-x-24 sm:translate-x-40 -translate-y-2 z-10 opacity-90"
+                // 0 : Extrême gauche
+                "-rotate-12 -translate-x-28 sm:-translate-x-48 -translate-y-2 z-10 opacity-70",
+                // 1 : Centre gauche
+                "-rotate-6 -translate-x-14 sm:-translate-x-24 translate-y-1 z-20 opacity-90",
+                // 2 : Centre (Focus)
+                "rotate-0 translate-y-2 z-30 scale-110 shadow-2xl opacity-100",
+                // 3 : Centre droite
+                "rotate-6 translate-x-14 sm:translate-x-24 translate-y-1 z-20 opacity-90",
+                // 4 : Extrême droite
+                "rotate-12 translate-x-28 sm:translate-x-48 -translate-y-2 z-10 opacity-70"
               ];
-              const transform = transforms[index] || "";
+              const transform = transforms[positionIndex];
               
               return (
                 <div 
                   key={product.id}
-                  className={`absolute w-36 sm:w-40 rounded-2xl shadow-xl bg-white p-3 border border-gray-100 transition-transform duration-500 hover:-translate-y-6 hover:z-40 ${transform}`}
+                  className={`absolute w-36 sm:w-40 rounded-2xl shadow-xl bg-white p-3 border border-gray-100 transition-all duration-700 ease-in-out hover:z-40 hover:-translate-y-4 ${transform}`}
                 >
                   <div className="h-20 sm:h-24 w-full rounded-xl bg-gray-100 overflow-hidden mb-3 relative">
                     <img src={product.image} alt={product.name} className="object-cover h-full w-full" />
