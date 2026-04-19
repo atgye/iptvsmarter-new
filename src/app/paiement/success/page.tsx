@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 type PaymentStatus = "loading" | "completed" | "pending" | "canceled" | "fail" | "error";
@@ -15,7 +15,7 @@ interface VerifyData {
   error?: string;
 }
 
-export default function SuccessPage() {
+function SuccessContent() {
   const params = useSearchParams();
   const token  = params.get("token");
 
@@ -177,5 +177,20 @@ export default function SuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 relative z-10">
+          <div className="h-16 w-16 rounded-full border-4 border-blue-600 border-t-transparent animate-spin drop-shadow-md" />
+          <p className="text-gray-700 font-bold text-base tracking-wider uppercase">Chargement…</p>
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }
