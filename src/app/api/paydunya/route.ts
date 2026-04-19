@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         description: item_name,
       },
       store: {
-        name: "IPTV Smarters",
+        name: "SunuStream",
       },
       custom_data: {
         ref_command: ref_command,

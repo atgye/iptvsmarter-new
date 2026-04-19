@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Comment ça marche – IPTVSmarters",
+  title: "Comment ça marche – SunuStream",
   description:
     "Découvrez comment obtenir vos abonnements premium en 3 étapes simples. Paiement mobile, livraison instantanée.",
 };

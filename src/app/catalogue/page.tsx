@@ -42,7 +42,7 @@ function CatalogueContent() {
             </h1>
             <p className="mt-4 text-base font-medium text-gray-700 sm:text-lg">
               De la sécurité VPN ultra-robuste au meilleur du divertissement
-              streaming. Tout IPTVSmarters dans une seule interface fluide.
+              streaming. Tout SunuStream dans une seule interface fluide.
             </p>
           </div>
 

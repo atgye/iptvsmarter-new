@@ -26,10 +26,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "IPTV Smarters – Abonnements Streaming & IPTV Premium au Sénégal",
+  title: "SunuStream – Le Meilleur du Streaming & IPTV au Sénégal",
   description:
-    "Le premier fournisseur d'abonnements digitaux premium au Sénégal. Netflix 4K, Spotify, Disney+, IPTV et VPN à des tarifs locaux. Livraison instantanée.",
+    "SunuStream est votre portail premium pour le divertissement au Sénégal. Profitez d'abonnements Netflix, Spotify, Disney+ et IPTV avec une livraison instantanée et un support 24/7.",
   keywords: [
+    "SunuStream",
     "IPTV",
     "Netflix Sénégal",
     "Spotify Premium",

@@ -20,7 +20,7 @@ export default function PanierPage() {
       const ref_command = `CMD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
       const payload = {
-        item_name: `Commande IPTVSmarters - ${items.length} article(s)`,
+        item_name: `Commande SunuStream - ${items.length} article(s)`,
         item_price: totalPrice,
         ref_command: ref_command,
         custom_field: { items: items.map(i => ({ id: i.product.id, qty: i.quantity })) }
@@ -56,7 +56,7 @@ export default function PanierPage() {
             Mon Panier
           </h1>
           <p className="mt-2 text-sm font-medium text-gray-700">
-            Reste cool avec IPTVSmarters.
+            Reste cool avec SunuStream.
           </p>
         </div>
       </section>

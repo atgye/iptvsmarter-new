@@ -56,7 +56,7 @@ export default function ConnexionPage() {
           <div className="flex items-center justify-center gap-3 mb-10">
             <span className="inline-block h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-md" />
             <span className="font-[var(--font-headline)] text-2xl font-bold text-gray-900 drop-shadow-sm">
-              IPTV<span className="text-blue-600">Smarters</span>
+              Sunu<span className="text-blue-600">Stream</span>
             </span>
           </div>
 
@@ -89,7 +89,7 @@ export default function ConnexionPage() {
           </h1>
           <p className="mt-2 text-sm font-medium text-gray-600 text-center px-4">
             {mode === "login"
-              ? "Bon retour parmi nous sur IPTVSmarters."
+              ? "Bon retour parmi nous sur SunuStream."
               : "Rejoignez la communauté et profitez du meilleur du stream."}
           </p>
 

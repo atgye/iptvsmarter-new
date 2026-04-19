@@ -37,17 +37,13 @@ export default function HomePage() {
     <>
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative overflow-hidden min-h-[90vh] flex items-center justify-center py-20">
-        {/* Background Collage */}
-        <div className="absolute inset-0 z-0 grid grid-cols-3">
-          <div className="relative h-full w-full">
-            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800" alt="Football bg" className="object-cover h-full w-full" />
-          </div>
-          <div className="relative h-full w-full">
-            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800" alt="Cinéma bg" className="object-cover h-full w-full" />
-          </div>
-          <div className="relative h-full w-full">
-            <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=800" alt="Série bg" className="object-cover h-full w-full" />
-          </div>
+        {/* Single beautiful background image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=1600&q=80" 
+            alt="Séries & Cinéma" 
+            className="object-cover h-full w-full opacity-60" 
+          />
         </div>
         
         {/* Glassmorphism Overlay */}
@@ -58,7 +54,7 @@ export default function HomePage() {
             {/* Chip */}
             <span className="inline-flex items-center gap-2 rounded-full bg-white/60 border border-white/50 px-4 py-1.5 text-xs font-semibold text-primary mb-8 shadow-sm">
               <span className="h-2 w-2 rounded-full bg-primary animate-glow-pulse" />
-              Nouveau : IPTVSmarters 2025
+              Nouveau : SunuStream 2025
             </span>
 
             <h1 className="font-[var(--font-headline)] text-4xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-5xl lg:text-6xl drop-shadow-sm">
@@ -139,9 +135,12 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Horizontal Snap Carousel */}
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 pt-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {allFeatured.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <div key={product.id} className="min-w-[280px] sm:min-w-[320px] snap-center">
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </div>

@@ -227,7 +227,7 @@ export default function ContactPage() {
                   WhatsApp pour une activation rapide.
                 </p>
                 <a
-                  href="https://wa.me/221000000000"
+                  href="https://wa.me/33631495006"
                   className="inline-flex items-center gap-3 rounded-2xl bg-emerald-100 px-8 py-4 text-sm font-bold text-emerald-600 transition-all hover:bg-emerald-200 hover:scale-105 shadow-sm"
                 >
                   <svg
@@ -285,7 +285,7 @@ export default function ContactPage() {
 
           <div className="mt-12 text-center">
             <a
-              href="https://wa.me/221000000000"
+              href="https://wa.me/33631495006"
               className="inline-flex glass border-white/60 items-center justify-center gap-3 rounded-2xl px-8 py-4 text-sm font-bold text-gray-800 transition-all hover:bg-white/60 hover:text-blue-600 shadow-md"
             >
               <span className="text-lg">💬</span> Une question ? Chattez avec nous !

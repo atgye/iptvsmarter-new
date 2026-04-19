@@ -27,7 +27,7 @@ export function Navbar() {
           >
             <span className="inline-block h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600" />
             <span className="text-gray-900 drop-shadow-sm">
-              IPTV<span className="text-blue-600">Smarters</span>
+              Sunu<span className="text-blue-600">Stream</span>
             </span>
           </Link>
 

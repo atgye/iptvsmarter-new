@@ -56,7 +56,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-block h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600" />
               <span className="font-[var(--font-headline)] text-lg font-bold text-gray-900 drop-shadow-sm">
-                IPTV<span className="text-blue-600">Smarters</span>
+                Sunu<span className="text-blue-600">Stream</span>
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-gray-700 font-medium">
@@ -133,7 +133,7 @@ export function Footer() {
             </div>
             <div className="mt-6">
               <a
-                href="https://wa.me/221000000000"
+                href="https://wa.me/33631495006"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 px-4 py-2.5 text-sm font-bold text-[#25D366] transition-all hover:bg-[#25D366]/20 shadow-sm"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 border-t border-white/40 pt-8 text-center">
           <p className="text-sm font-semibold text-gray-500">
-            © {new Date().getFullYear()} IPTVSmarters. Tous droits réservés.
+            © {new Date().getFullYear()} SunuStream. Tous droits réservés.
           </p>
         </div>
       </div>
